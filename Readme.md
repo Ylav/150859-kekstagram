@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Валентина Кравченко](https://up.htmlacademy.ru/javascript/4/user/150859).
-* Наставник: `Игорь Кузнецов`.
+* Наставник: `Игорь Кузнецов` .
 
 ---
 
