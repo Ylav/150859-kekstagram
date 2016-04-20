@@ -71,9 +71,11 @@
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
-  function resizeFormIsValid() {
-    return true;
-  }
+  // function resizeFormIsValid() {
+  //   if слева + сторона < currentResizer._image.naturalWidth & сверху + сторона < currentResizer._image.naturalWidth & сверху, слева > 0
+  //   return true;
+  //   else classList.add ('disabled');
+  // }
 
   /**
    * Форма загрузки изображения.

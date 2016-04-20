@@ -1,4 +1,6 @@
-require('./check');
-require('./resizer');
+'use strict';
+
 require('./upload-stat.min');
 require('./upload');
+require('./check');
+require('./resizer');
