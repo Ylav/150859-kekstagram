@@ -71,11 +71,31 @@
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
-  // function resizeFormIsValid() {
-  //   if слева + сторона < currentResizer._image.naturalWidth & сверху + сторона < currentResizer._image.naturalWidth & сверху, слева > 0
-  //   return true;
-  //   else classList.add ('disabled');
-  // }
+
+    var left = document.querySelector ('#resize-x');
+    var top = document.querySelector ('#resize-y');
+    var side = document.querySelector ('#resize-size');
+    var resizeFwd = document.querySelector('#resize-fwd');
+    var resizeForm = document.forms['upload-resize'];
+
+  function resizeFormIsValid() {
+    (+left.value + +side.value >= currentResizer._image.naturalWidth) ? false :
+    (+top.value + +side.value >= currentResizer._image.naturalHeight) ? false :
+    (+left.value < 0) ? false :
+    (+top.value < 0) ? false :
+    (+side.value < 0) ? false :
+    true;
+  };
+
+  resizeForm.onchange = function() {
+    resizeFormIsValid(left.value, top.value, side.value);
+    if (resizeFormIsValid) {
+      resizeFwd.removeAttribute('disabled');
+    }
+    else {
+      resizeFwd.setAttribute('disabled');
+    };
+  };
 
   /**
    * Форма загрузки изображения.
