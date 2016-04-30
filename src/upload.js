@@ -88,13 +88,13 @@
   };
 
   resizeForm.onchange = function() {
-    resizeFormIsValid(left.value, top.value, side.value);
-    if (resizeFormIsValid) {
-      resizeFwd.removeAttribute('disabled');
-    }
-    else {
-      resizeFwd.setAttribute('disabled');
-    };
+    resizeFormIsValid();
+    if (resizeFormIsValid()) {
+       resizeFwd.removeAttribute('disabled');
+       }
+       else {
+         resizeFwd.setAttribute('disabled');
+       };
   };
 
   /**
