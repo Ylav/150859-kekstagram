@@ -14,6 +14,7 @@
     'JPEG': '',
     'PNG': '',
     'SVG+XML': ''
+
   };
 
   /** @enum {number} */
@@ -72,30 +73,27 @@
    * @return {boolean}
    */
 
-    var left = document.querySelector ('#resize-x');
-    var top = document.querySelector ('#resize-y');
-    var side = document.querySelector ('#resize-size');
+    var left = document.querySelector('#resize-x');
+    left.min = 0;
+    var top = document.querySelector('#resize-y');
+    top.min = 0;
+    var side = document.querySelector('#resize-size');
+    side.min = 0;
     var resizeFwd = document.querySelector('#resize-fwd');
     var resizeForm = document.forms['upload-resize'];
 
   function resizeFormIsValid() {
-    (+left.value + +side.value >= currentResizer._image.naturalWidth) ? false :
-    (+top.value + +side.value >= currentResizer._image.naturalHeight) ? false :
-    (+left.value < 0) ? false :
-    (+top.value < 0) ? false :
-    (+side.value < 0) ? false :
-    true;
-  };
+      return (+left.value + +side.value >= currentResizer._image.naturalWidth) ? false : (+top.value + +side.value >= currentResizer._image.naturalHeight) ? false : true;
+    };
 
-  resizeForm.onchange = function() {
-    resizeFormIsValid();
+  resizeForm.oninput = function() {
     if (resizeFormIsValid()) {
        resizeFwd.removeAttribute('disabled');
+     }
+     else {
+         resizeFwd.setAttribute('disabled', true);
        }
-       else {
-         resizeFwd.setAttribute('disabled');
-       };
-  };
+}
 
   /**
    * Форма загрузки изображения.
@@ -215,6 +213,8 @@
    */
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
+    // var browserCookies = require('browser-cookies');
+    // document.cookie =
 
     if (resizeFormIsValid()) {
       filterImage.src = currentResizer.exportImage().src;
@@ -265,7 +265,7 @@
         'sepia': 'filter-sepia'
       };
     }
-
+  // Сохранение последнего выбранного фильтра
     var selectedFilter = [].filter.call(filterForm['upload-filter'], function(item) {
       return item.checked;
     })[0].value;
