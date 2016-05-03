@@ -7,6 +7,7 @@
 
 'use strict';
 
+var browserCookies = require('browser-cookies');
 
 (function() {
   /** @enum {string} */
@@ -266,6 +267,7 @@
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
+
     this.submit();
   };
 
@@ -292,7 +294,7 @@
     // Класс перезаписывается, а не обновляется через classList потому что нужно
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
-    filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
+    filterImage.className = 'filter-image-preview' + filterMap[selectedFilter];
   };
 
   cleanupResizer();
