@@ -7,6 +7,8 @@
 
 'use strict';
 
+var browserCookies = require('browser-cookies');
+
 (function() {
   /** @enum {string} */
   var FileType = {
@@ -72,30 +74,27 @@
    * @return {boolean}
    */
 
-    var left = document.querySelector ('#resize-x');
-    var top = document.querySelector ('#resize-y');
-    var side = document.querySelector ('#resize-size');
-    var resizeFwd = document.querySelector('#resize-fwd');
-    var resizeForm = document.forms['upload-resize'];
+   var left = document.querySelector('#resize-x');
+   left.min = 0;
+   var top = document.querySelector('#resize-y');
+   top.min = 0;
+   var side = document.querySelector('#resize-size');
+   side.min = 0;
+   var resizeFwd = document.querySelector('#resize-fwd');
+   var resizeForm = document.forms['upload-resize'];
 
-  function resizeFormIsValid() {
-    (+left.value + +side.value >= currentResizer._image.naturalWidth) ? false :
-    (+top.value + +side.value >= currentResizer._image.naturalHeight) ? false :
-    (+left.value < 0) ? false :
-    (+top.value < 0) ? false :
-    (+side.value < 0) ? false :
-    true;
-  };
+ function resizeFormIsValid() {
+     return (+left.value + +side.value >= currentResizer._image.naturalWidth) ? false : (+top.value + +side.value >= currentResizer._image.naturalHeight) ? false : true;
+   };
 
-  resizeForm.onchange = function() {
-    resizeFormIsValid(left.value, top.value, side.value);
-    if (resizeFormIsValid) {
+ resizeForm.oninput = function() {
+   if (resizeFormIsValid()) {
       resizeFwd.removeAttribute('disabled');
     }
     else {
-      resizeFwd.setAttribute('disabled');
-    };
-  };
+        resizeFwd.setAttribute('disabled', true);
+      }
+}
 
   /**
    * Форма загрузки изображения.
@@ -216,6 +215,10 @@
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
 
+      // Чтение куки
+      var selectedFilter = document.querySelector('#upload-filter-');
+      selectedFilter.value = browserCookies.get('lastFilter') || 'none';
+
     if (resizeFormIsValid()) {
       filterImage.src = currentResizer.exportImage().src;
 
@@ -242,6 +245,22 @@
    */
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
+
+    var daysFromBirth = function(){
+          var dayNow = new Date();
+          var yearNow = dayNow.getFullYear();
+          var birthdayInThisYear = new Date(yearNow, 4, 9);
+          var birthdayInLastYear = new Date((yearNow - 1), 4, 9);
+          var daysThisYear = (dayNow - birthdayInThisYear) / (24 * 60 * 60 * 1000);
+          var daysLastYear = (dayNow - birthdayInlastYear) / (24 * 60 * 60 * 1000);
+
+          return (dayNow - birthdayInThisYear > 0) ? daysThisYear : daysLastYear;
+        }
+
+      //Установка куки
+        browserCookies.set('lastFilter', selectedFilter, {
+          expires: daysFromBirth();
+        });
 
     cleanupResizer();
     updateBackground();
