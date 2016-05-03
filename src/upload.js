@@ -7,6 +7,7 @@
 
 'use strict';
 
+
 (function() {
   /** @enum {string} */
   var FileType = {
@@ -41,7 +42,6 @@
    * @type {Resizer}
    */
   var currentResizer;
-
   /**
    * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
    * изображением.
@@ -213,11 +213,13 @@
    */
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
-    // var browserCookies = require('browser-cookies');
-    // document.cookie =
 
     if (resizeFormIsValid()) {
       filterImage.src = currentResizer.exportImage().src;
+
+      // Чтение куки
+      var selectedFilter = document.querySelector('#upload-filter-');
+      selectedFilter.value = browserCookies.get('lastFilter') || 'none';
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
@@ -243,11 +245,28 @@
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
+    var daysFromBirth = function(){
+      var dayNow = new Date();
+      var yearNow = dayNow.getFullYear();
+      var birthdayInThisYear = new Date(yearNow, 4, 9);
+      var birthdayInLastYear = new Date((yearNow - 1), 4, 9);
+      var daysThisYear = (dayNow - birthdayInThisYear) / (24 * 60 * 60 * 1000);
+      var daysLastYear = (dayNow - birthdayInlastYear) / (24 * 60 * 60 * 1000);
+
+      return (dayNow - birthdayInThisYear > 0) ? daysThisYear : daysLastYear;
+    }
+
+  //Установка куки
+    browserCookies.set('lastFilter', selectedFilter, {
+      expires: daysFromBirth();
+    });
+
     cleanupResizer();
     updateBackground();
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
+    this.submit();
   };
 
   /**
