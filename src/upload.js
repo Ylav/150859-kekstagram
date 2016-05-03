@@ -215,12 +215,12 @@ var browserCookies = require('browser-cookies');
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
 
+    if (resizeFormIsValid()) {
+      filterImage.src = currentResizer.exportImage().src;
+
       // Чтение куки
       var selectedFilter = document.querySelector('#upload-filter-');
       selectedFilter.value = browserCookies.get('lastFilter') || 'none';
-
-    if (resizeFormIsValid()) {
-      filterImage.src = currentResizer.exportImage().src;
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
